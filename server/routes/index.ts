@@ -63,17 +63,18 @@ export default eventHandler(async (event) => {
 		}
 
 		let html = `
-      <table>
-        <thead>
-          <tr>
-            <th>Repo</th>
-            <th>Version</th>
-            <th>Merged Features</th>
-            <th>Queued Features</th>
-            <th>Upstream Features</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Repo</th>
+              <th>Version</th>
+              <th>Merged Features</th>
+              <th>Queued Features</th>
+              <th>Upstream Features</th>
+            </tr>
+          </thead>
+          <tbody>
     `;
 
 		for (const [repoName, versions] of Object.entries(reposByRepo)) {
@@ -98,8 +99,9 @@ export default eventHandler(async (event) => {
 		}
 
 		html += `
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     `;
 
 		return html;
@@ -136,15 +138,24 @@ export default eventHandler(async (event) => {
           h1 {
             margin-bottom: 10px;
             color: #2c3e50;
+            font-size: 2rem;
           }
           .subtitle {
             color: #7f8c8d;
             margin-bottom: 30px;
           }
+          .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 20px;
+            border: 1px solid #ecf0f1;
+            border-radius: 4px;
+          }
           table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            min-width: 800px; /* Force horizontal scroll on small screens */
           }
           thead {
             background: #34495e;
@@ -155,10 +166,12 @@ export default eventHandler(async (event) => {
             text-align: left;
             font-weight: 600;
             border-bottom: 2px solid #2c3e50;
+            white-space: nowrap;
           }
           td {
             padding: 12px;
             border-bottom: 1px solid #ecf0f1;
+            vertical-align: top;
           }
           tbody tr:hover {
             background: #f8f9fa;
@@ -171,11 +184,32 @@ export default eventHandler(async (event) => {
           td:nth-child(5) {
             font-size: 0.9em;
             color: #555;
+            min-width: 200px;
             white-space: pre-wrap;
           }
           .empty {
             color: #95a5a6;
             font-style: italic;
+            text-align: center;
+            padding: 20px;
+          }
+          @media (max-width: 768px) {
+            body {
+              padding: 10px;
+            }
+            .container {
+              padding: 15px;
+            }
+            h1 {
+              font-size: 1.5rem;
+            }
+            .subtitle {
+              margin-bottom: 20px;
+              font-size: 0.9rem;
+            }
+            th, td {
+              padding: 8px;
+            }
           }
         </style>
       </head>
